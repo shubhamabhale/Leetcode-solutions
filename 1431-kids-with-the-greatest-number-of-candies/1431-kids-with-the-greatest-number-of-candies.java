@@ -9,7 +9,6 @@ class Solution {
             }
         }
         ArrayList<Boolean> ans = new ArrayList<>();
-        System.out.println(candies[max]);
         for(int i=0;i<candies.length;i++)
         {
             if(extraCandies + candies[i]>=candies[max])
