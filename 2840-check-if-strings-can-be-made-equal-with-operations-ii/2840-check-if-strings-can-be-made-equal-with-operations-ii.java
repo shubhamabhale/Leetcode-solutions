@@ -29,7 +29,6 @@ class Solution {
         
         for(int i=0;i<26;i++)
         {
-            System.out.println(even[i] + " " + odd[i]);
             if(even[i]!=0)
             {
                 return false;
