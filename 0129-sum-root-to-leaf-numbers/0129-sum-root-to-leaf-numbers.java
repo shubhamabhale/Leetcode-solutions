@@ -14,6 +14,7 @@
  * }
  */
 class Solution {
+    int sum=0;
     List<Integer> list = new ArrayList<>();
     public void recurse(TreeNode root, int value) {
         if(root==null)
@@ -24,6 +25,7 @@ class Solution {
         {
             value = value*10 + root.val; 
             list.add(value);
+            sum+= value;
             return ;
         }
         value = value*10 + root.val; 
@@ -32,11 +34,7 @@ class Solution {
     }
     public int sumNumbers(TreeNode root) {
         recurse(root,0);
-        int sum=0;
-        for(int i: list) {
-            System.out.print(i+ " ");
-            sum += i;
-        }
+       
         return sum;
     }
 }
