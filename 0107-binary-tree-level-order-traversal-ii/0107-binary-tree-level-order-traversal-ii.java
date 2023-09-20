@@ -19,7 +19,7 @@ class Solution {
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         if(root==null)
             return answer;
-        Stack<List<Integer>> stack = new Stack<>();
+
         Queue<TreeNode> que = new LinkedList<>();
         
         que.add(root);
@@ -36,14 +36,9 @@ class Solution {
                 if(curr.right!=null)
                     que.add(curr.right);
             }
-            stack.add(temp);
+            answer.add(temp);
         }
-        
-        while(!stack.isEmpty())
-        {
-            answer.add(stack.peek());
-            stack.pop();
-        }
-        return answer;
+        Collections.reverse(answer);
+        return (answer);
     }
 }
