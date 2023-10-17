@@ -1,46 +1,58 @@
 class Solution {
     public void solve(char[][] board) {
-        if (board.length == 0) {
+        if(board.length==0)
             return;
+        
+        char[][] visited = new char[board.length][board[0].length];
+        Arrays.stream(visited).forEach(x-> Arrays.fill(x, 'n'));
+        
+        for (int i = 0; i < board.length; i++) {
+            if (board[i][0] == 'O') { 
+                dfs(board, visited, i, 0);
+            }
+            if (board[i][board[0].length - 1] == 'O') {
+                dfs(board, visited, i, board[0].length - 1);
+            }
         }
 
-        int rows = board.length;
-        int cols = board[0].length;
-
-        // Mark 'O' cells connected to the borders as 'p'
-        for (int i = 0; i < rows; i++) {
-            dfs(board, i, 0);
-            dfs(board, i, cols - 1);
+        for (int i = 0; i < board[0].length; i++) {
+            if (board[0][i] == 'O') {
+                dfs(board, visited, 0, i);
+            }
+            if (board[board.length - 1][i] == 'O') {
+                dfs(board, visited, board.length - 1, i);
+            }
         }
-
-        for (int i = 0; i < cols; i++) {
-            dfs(board, 0, i);
-            dfs(board, rows - 1, i);
-        }
-
-        // Convert marked 'p' cells to 'O' and 'O' cells to 'X'
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (board[i][j] == 'O') {
-                    board[i][j] = 'X';
-                } else if (board[i][j] == 'p') {
-                    board[i][j] = 'O';
+       
+        for(int i=0;i<board.length;i++ ){
+            for(int j=0;j<board[0].length;j++) {
+                
+                if(board[i][j]=='p'){
+                    board[i][j]='O';
+                }
+                else if(board[i][j]=='O') {
+                    board[i][j]='X';
                 }
             }
         }
+        return;
+        
     }
-
-    public void dfs(char[][] board, int row, int col) {
-        if (row < 0 || col < 0 || row >= board.length || col >= board[0].length || board[row][col] != 'O') {
+    
+    public void dfs(char[][] board, char[][] visited, int row, int col) {
+        if(row<0 || col<0 || row>= board.length || col>= board[0].length || visited[row][col] =='v' ) {
             return;
         }
-
-        board[row][col] = 'p'; // Mark it as 'p' (not surrounded by 'X')
-
-        // Recursively visit adjacent cells
-        dfs(board, row + 1, col);
-        dfs(board, row - 1, col);
-        dfs(board, row, col + 1);
-        dfs(board, row, col - 1);
+        
+        visited[row][col]='v';
+        if(board[row][col]=='O') {
+            board[row][col]='p';
+            dfs( board, visited, row+1, col);
+            dfs( board, visited, row-1, col);
+            dfs( board, visited, row, col+1);
+            dfs( board, visited, row, col-1);
+            
+        }
+        return;
     }
 }
