@@ -11,7 +11,6 @@ class Solution {
                 dfs(board, visited, i, 0);
             }
             if (board[i][board[0].length - 1] == 'O') {
-                 System.out.print("hi ");
                 dfs(board, visited, i, board[0].length - 1);
             }
         }
