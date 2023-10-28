@@ -19,8 +19,6 @@ class Solution {
         if(root==null)
             return ;
         inorder(root.left,k);
-        
-        System.out.print(root.val +  " ");
         count++;
         if(count==k)
         {
