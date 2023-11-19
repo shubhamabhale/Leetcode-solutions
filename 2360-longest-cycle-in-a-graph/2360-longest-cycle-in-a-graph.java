@@ -12,8 +12,9 @@ class Solution {
             else if(extra.contains(index)) {
                 answer = Math.max(answer, distance - distances.get(index));
             }
-            extra.remove(index);
+            
         }
+        extra.remove(index);
     }
     public int longestCycle(int[] edges) {
         HashSet<Integer> visited = new HashSet<>();
