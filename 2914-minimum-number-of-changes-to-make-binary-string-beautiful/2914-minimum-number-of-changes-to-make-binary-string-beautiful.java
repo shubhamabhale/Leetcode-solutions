@@ -1,5 +1,4 @@
 class Solution {
-    int mincount = Integer.MAX_VALUE;
     int cnt =0;
     public void recurse(String str) {
         if(str.length()==1) {
