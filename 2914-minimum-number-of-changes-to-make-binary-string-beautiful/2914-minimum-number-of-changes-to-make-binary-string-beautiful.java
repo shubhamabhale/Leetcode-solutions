@@ -1,10 +1,7 @@
 class Solution {
     int cnt =0;
     public void recurse(String str) {
-        if(str.length()==1) {
-            cnt++;
-            return;
-        }
+
         if(str.length()==2){
             if(str.equals("01") || str.equals("10")) {
                 cnt++;
