@@ -1,22 +1,26 @@
 class Solution {
     public int maxScore(String s) {
-        int ones = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '1') {
-                ones++;
+        int oCnt = 0;
+        for(int  i=0;i<s.length();i++) {
+            if(s.charAt(i)=='1') {
+                oCnt++;   
             }
         }
         
         int ans = 0;
-        int zeros = 0;
-        for (int i = 0; i < s.length() - 1; i++) {
-            if (s.charAt(i) == '1') {
-                ones--;
-            } else {
-                zeros++;
+        int zCnt =0;
+        
+        for(int i=0;i<s.length()-1;i++) 
+        {
+            char ch = s.charAt(i);
+            if(ch=='1') {
+                oCnt--;
+              
+            }           
+            else {
+                 zCnt++;
             }
-            
-            ans = Math.max(ans, zeros + ones);
+            ans = Math.max(ans, zCnt + oCnt);
         }
         
         return ans;
