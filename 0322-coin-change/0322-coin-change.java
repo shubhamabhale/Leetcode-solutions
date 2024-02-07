@@ -21,7 +21,7 @@ class Solution {
         return dp.get(target);
     }
     public int coinChange(int[] coins, int amount) {
-        Arrays.sort(coins);
+        //Arrays.sort(coins);
         reverseArray(coins);
      
         return recurse(coins, 0, amount);
