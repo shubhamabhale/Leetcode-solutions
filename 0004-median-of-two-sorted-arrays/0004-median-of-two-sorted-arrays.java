@@ -44,9 +44,7 @@ class Solution {
             return (double)Math.ceil(answer[answer.length/2]);
         else{
             int temp = (answer.length)/2 -1;
-            
             double ans = answer[temp]+answer[temp+1];
-            System.out.println(temp + " " + ans);
             return (double)ans/2;
         }
     }
