@@ -13,11 +13,12 @@ class Solution {
         while(x>0){
             
             carry = x%10;
-            ans += carry*(Math.pow(10,n));
-            n--;
-            x=x/10;
+            ans += carry*(Math.pow(10,n--));
+
             if(ans>=Integer.MAX_VALUE)
                 return 0;
+            
+            x=x/10;            
         }
         
         return signed?-1*ans:ans;
