@@ -1,135 +1,107 @@
-import java.util.HashMap;
-
 class LRUCache {
     class ListNode {
         int key;
-        int value;
-        ListNode next;
-        ListNode prev;
-
-        public ListNode(int key, int value) {
+        int val;
+        ListNode next, prev;
+        
+        public ListNode(int key, int val) {
             this.key = key;
-            this.value = value;
+            this.val = val;
         }
     }
-
+    
     ListNode head;
-    int listSize;
-    int capacity;
-    HashMap<Integer, Integer> mapper;
+    ListNode tail;
+    HashMap<Integer, Integer> cache;
+    int CAPACITY;
 
     public LRUCache(int capacity) {
-        this.capacity = capacity;
+        cache = new HashMap<>();
         head = null;
-        mapper = new HashMap<>();
+        tail = null;
+        CAPACITY = capacity;
     }
+    
 
-    // Helper method to remove the last element from the cache
-    private void removeLast() {
-        if (head == null)
-            return;
-        
-        if (head.next == null) {
-            // Only one element in the list
-            mapper.remove(head.key);
-            head = null;
+    public void moveToHead(int key, int value) {
+        if (head == null) {
+            head = new ListNode(key, value);
+            head.next = head.prev = null;
+            tail = head;
         } else {
-            ListNode ptr = head;
-            while (ptr.next != null) {
-                ptr = ptr.next;
-            }
-            mapper.remove(ptr.key);
-            ListNode prev = ptr.prev;
-            prev.next = null;
-            ptr.prev = null;
+            ListNode temp = new ListNode(key, value);
+            temp.next = head;
+            head.prev = temp;
+            head = temp;
         }
-        listSize--;
     }
 
-    // Helper method to remove a specific key from the list
-    private boolean removeFromList(int key) {
-        if (head == null)
-            return false;
+    public int removeFromEnd() {
+        if (head == null || tail == null) {
+            return -1;
+        }
+        int removedKey = tail.key;
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            tail = tail.prev;
+            tail.next = null;
+        }
+        return removedKey;
+    }
 
-        if (head.key == key) {
+    public int removeElement(int key) {
+        if (head == null) {
+            return -1;
+        }
+        ListNode curr = head;
+        if (curr.key == key) {
             head = head.next;
             if (head != null) {
                 head.prev = null;
+            } else {
+                tail = null; // If head was the only node, update tail
             }
-            return true;
+            return -1;
         }
-
-        ListNode ptr = head;
-        while (ptr != null) {
-            if (ptr.key == key) {
-                ListNode prev = ptr.prev;
-                prev.next = ptr.next;
-                if (ptr.next != null) {
-                    ptr.next.prev = prev;
-                }
-                return true;
-            }
-            ptr = ptr.next;
+        while (curr.key != key) {
+            curr = curr.next;
         }
-        return false;
+        ListNode tempPrev = curr.prev;
+        tempPrev.next = curr.next;
+        if (curr.next != null) {
+            curr.next.prev = tempPrev;
+        } else {
+            tail = tempPrev; // If the node to remove was the tail, update tail
+        }
+        curr.next = curr.prev = null;
+        return curr.val;
     }
 
-    // Helper method to move a node to the front of the list
-    private void bringNodeToFront(int key) {
-        if (head == null || head.key == key) {
-            return;
+    public int get(int key) {
+        if (cache.containsKey(key)) {
+            int value = cache.get(key);
+            removeElement(key); // Remove the node from its current position
+            moveToHead(key, value); // Move it to the head of the list
+            return value;
         }
-        removeFromList(key);
-        ListNode temp = new ListNode(key, mapper.get(key));
-        temp.next = head;
-        if (head != null) {
-            head.prev = temp;
-        }
-        head = temp;
-    }
-
-public int get(int key) {
-    if (mapper.containsKey(key)) {
-        bringNodeToFront(key);
-        return mapper.get(key);
-    } else {
         return -1;
     }
-}
 
-
-   public void put(int key, int value) {
-    if (head == null) {
-        // Cache is empty, add the first node
-        mapper.put(key, value);
-        head = new ListNode(key, value);
-        listSize++;
-    } else if (mapper.containsKey(key)) {
-        // Key already exists, update the value and move to the front
-        removeFromList(key);
-        ListNode temp = new ListNode(key, value);
-        temp.next = head;
-        if (head != null) {
-            head.prev = temp;
+    public void put(int key, int value) {
+        if (!cache.containsKey(key)) {
+            if (cache.size() == CAPACITY) {
+                int removedKey = removeFromEnd();
+                cache.remove(removedKey);
+            }
+            moveToHead(key, value);
+            cache.put(key, value);
+        } else {
+            // Update the value of the existing node
+            cache.put(key, value);
+            // Move the existing node to the head
+            removeElement(key);
+            moveToHead(key, value);
         }
-        head = temp;
-        mapper.put(key, value);
-    } else {
-        // Cache has space, add a new node to the front
-        if (listSize == capacity) {
-            // Cache is full, remove the last node
-            removeLast();
-        }
-        mapper.put(key, value);
-        listSize++;
-        ListNode temp = new ListNode(key, value);
-        temp.next = head;
-        if (head != null) {
-            head.prev = temp;
-        }
-        head = temp;
     }
-}
-
-
 }
