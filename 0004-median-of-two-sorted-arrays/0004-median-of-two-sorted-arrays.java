@@ -39,7 +39,7 @@ class Solution {
     }
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int[] answer = mergeArrays(nums1, nums2);
-        System.out.println(Arrays.toString(answer));
+    
         if(answer.length%2!=0)
             return (double)Math.ceil(answer[answer.length/2]);
         else{
