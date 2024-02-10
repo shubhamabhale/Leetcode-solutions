@@ -59,8 +59,6 @@ class LRUCache {
             head = head.next;
             if (head != null) {
                 head.prev = null;
-            } else {
-                tail = null; // If head was the only node, update tail
             }
             return -1;
         }
