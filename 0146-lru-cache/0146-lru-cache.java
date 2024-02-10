@@ -13,7 +13,7 @@ class LRUCache {
     ListNode head;
     ListNode tail;
     HashMap<Integer, Integer> cache;
-    int CAPACITY;
+    final int CAPACITY;
 
     public LRUCache(int capacity) {
         cache = new HashMap<>();
