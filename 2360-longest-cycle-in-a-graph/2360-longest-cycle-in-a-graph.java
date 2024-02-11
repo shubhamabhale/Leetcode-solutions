@@ -1,34 +1,33 @@
 class Solution {
-    int answer = -1;
-    public void dfs(int[] edges, int index, HashSet<Integer> visited, HashSet<Integer> extra, HashMap<Integer, Integer> distances, int distance) {
-
-        if(edges[index]!=-1) {
-            if(!visited.contains(index)) {
-                visited.add(index);
-                extra.add(index);
-                distances.put(index, distance);
-                dfs(edges, edges[index], visited, extra, distances, distance+1);
-            }
-            else if(extra.contains(index)) {
-                answer = Math.max(answer, distance - distances.get(index));
-            }
-            
+    int ans =-1;
+    public void dfs(int[] edges, int idx, boolean[] visited, HashMap<Integer, Integer> hmap) {
+        
+        visited[idx] = true;
+        int neighbour = edges[idx];
+        
+        if(neighbour!=-1 && !visited[neighbour]){
+            hmap.put(neighbour, hmap.get(idx)+1);
+            dfs(edges, neighbour, visited, hmap);
         }
-        extra.remove(index);
+        else if(neighbour!=-1 && hmap.containsKey(neighbour)){
+            ans = Math.max(ans, hmap.get(idx)-hmap.get(neighbour)+1);
+        }
     }
     public int longestCycle(int[] edges) {
-        HashSet<Integer> visited = new HashSet<>();
-        HashSet<Integer> extra = new HashSet<>();
-     
-        HashMap<Integer, Integer> distances = new HashMap<>();
         
-        for(int i=0;i<edges.length;i++) {
-            if(!visited.contains(i)) {
-                dfs(edges, i, visited, extra, distances, 0);
+        int n = edges.length;
+        boolean[] visited = new boolean[n];
+        
+        
+        for(int i=0;i<n;i++)
+        {
+            if(!visited[i]){
+                HashMap<Integer, Integer> hmap = new HashMap<>();
+                hmap.put(i, 1);
+                dfs(edges, i, visited, hmap);
             }
         }
         
-        return answer;
-        
+        return ans;
     }
 }
