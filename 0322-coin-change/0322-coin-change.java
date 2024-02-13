@@ -22,7 +22,7 @@ class Solution {
     }
     public int coinChange(int[] coins, int amount) {
         Arrays.sort(coins);
-        //reverseArray(coins);
+        reverseArray(coins);
      
         return recurse(coins, 0, amount);
     }
