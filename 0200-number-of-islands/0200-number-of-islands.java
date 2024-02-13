@@ -5,7 +5,10 @@ class Solution {
         if(x<0 || y<0 || x>=grid.length ||y>= grid[0].length)
             return;
         
-
+        if(visited[x][y]==1)
+            return;
+        
+        visited[x][y]=1;
         if(grid[x][y]=='1')
         {  
             grid[x][y] = 'p';
