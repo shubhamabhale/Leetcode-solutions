@@ -12,47 +12,42 @@ class Solution {
     }
 
     public int networkDelayTime(int[][] times, int n, int k) {
-        // Create adjacency list
-        Map<Integer, List<Pair>> adj = new HashMap<>();
-        for (int[] time : times) {
-            int source = time[0];
-            int dest = time[1];
-            int travelTime = time[2];
-            adj.putIfAbsent(source, new ArrayList<>());
-            adj.get(source).add(new Pair(dest, travelTime));
+        HashMap<Integer, HashSet<Pair>> hmap = new HashMap<>();
+        
+        for(int[] time: times){
+            Pair p = new Pair(time[1], time[2]);
+            HashSet<Pair> temp = hmap.getOrDefault(time[0], new HashSet<>());
+            temp.add(p);
+            hmap.put(time[0], temp);
         }
-
-        // Initialize signalReceivedAt array
-        int[] signalReceivedAt = new int[n + 1];
-        Arrays.fill(signalReceivedAt, Integer.MAX_VALUE);
-
-        // Add source node to the queue
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(k);
-        signalReceivedAt[k] = 0;
-
-        // BFS traversal
-        while (!queue.isEmpty()) {
-            int currNode = queue.poll();
-            if (!adj.containsKey(currNode)) continue;
-            for (Pair edge : adj.get(currNode)) {
-                int neighborNode = edge.dest;
-                int arrivalTime = signalReceivedAt[currNode] + edge.cost;
-                if (arrivalTime < signalReceivedAt[neighborNode]) {
-                    signalReceivedAt[neighborNode] = arrivalTime;
-                    queue.add(neighborNode);
+        
+        Queue<Integer> que = new LinkedList<>();
+        
+        que.add(k);
+        int ans= Integer.MIN_VALUE;
+        int[] visited = new int[n+1];
+        
+        Arrays.fill(visited, Integer.MAX_VALUE);
+        visited[k]=0;
+        
+        while (!que.isEmpty()) {
+            int current = que.poll();
+            if(!hmap.containsKey(current))
+                continue;
+            HashSet<Pair> neighbors = hmap.getOrDefault(current, new HashSet<>());
+            for (Pair p : neighbors) {
+                int time = visited[current] + p.cost;
+                if (visited[p.dest] > time) {
+                    visited[p.dest] = time;
+                    que.add(p.dest);
                 }
             }
         }
-
-        // Find maximum signal arrival time
-        int maxSignalTime = Integer.MIN_VALUE;
+        
         for (int i = 1; i <= n; i++) {
-            maxSignalTime = Math.max(maxSignalTime, signalReceivedAt[i]);
+            ans = Math.max(ans, visited[i]);
         }
-
-        // Check if any node is unreachable
-        if (maxSignalTime == Integer.MAX_VALUE) return -1;
-        return maxSignalTime;
+        
+        return ans == Integer.MAX_VALUE ? -1 : ans;
     }
 }
