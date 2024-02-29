@@ -1,19 +1,37 @@
+import java.util.Arrays;
+
 class Solution {
+    int[] memo;
+
     public int lengthOfLIS(int[] nums) {
-        int[] dp = new int[nums.length];
-        Arrays.fill(dp,1);
-        
-        for(int i=1;i<nums.length;i++) {
-            for(int j=0; j<i;j++) {
-                if(nums[i]>nums[j]) {
-                    dp[i] = Math.max(dp[i], dp[j]+1);
-                }
+        int n = nums.length;
+        memo = new int[n];
+        Arrays.fill(memo, -1); // Initialize memoization array with -1 (indicating not computed)
+
+        int maxLength = 0;
+        for (int i = 0; i < n; i++) {
+            maxLength = Math.max(maxLength, findLIS(nums, i));
+        }
+        return maxLength;
+    }
+
+    private int findLIS(int[] nums, int currentIndex) {
+        if (currentIndex == nums.length) {
+            return 0; // Base case: reached end of the array
+        }
+
+        if (memo[currentIndex] != -1) {
+            return memo[currentIndex]; // Return memoized result if available
+        }
+
+        int maxLength = 1; // Minimum length of LIS is 1 (current element itself)
+        for (int i = currentIndex + 1; i < nums.length; i++) {
+            if (nums[i] > nums[currentIndex]) {
+                maxLength = Math.max(maxLength, 1 + findLIS(nums, i));
             }
         }
-        int max = -1;
-        for(int i: dp) {
-            max = Math.max(i, max);
-        }
-        return max;
+
+        memo[currentIndex] = maxLength; // Memoize the result
+        return maxLength;
     }
 }
