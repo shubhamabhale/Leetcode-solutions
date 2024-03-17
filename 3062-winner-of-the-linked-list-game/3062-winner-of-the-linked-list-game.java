@@ -22,10 +22,7 @@ class Solution {
                 even++;
             } else if(ptr.val<ptr.next.val){
                 odd++;
-            } else {
-                even++;
-                odd++;
-            }
+            } 
             ptr = ptr.next.next;
         }
         
