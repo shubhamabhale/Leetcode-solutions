@@ -1,9 +1,9 @@
 class Solution {
     HashMap<Integer, Integer> dp = new HashMap<>();
     
-    public int recurse(int[] coins, int cnt, int target) {
+    public int recurse(int[] coins,  int target) {
         if(target==0)
-            return cnt;
+            return 0;
         if(dp.containsKey(target))
             return dp.get(target);
         
@@ -11,7 +11,7 @@ class Solution {
         for(int i=0;i<coins.length;i++) {
            
             if(target>=coins[i]) {
-                int res = recurse(coins, cnt, target - coins[i]);
+                int res = recurse(coins,  target - coins[i]);
                 if(res!=-1) {
                     min_cnt  =  Math.min(1+res, min_cnt);
                 }
@@ -21,26 +21,8 @@ class Solution {
         return dp.get(target);
     }
     public int coinChange(int[] coins, int amount) {
-        //Arrays.sort(coins);
-        //reverseArray(coins);
      
-        return recurse(coins, 0, amount);
+        return recurse(coins, amount);
     }
 
-
-    private static void reverseArray(int[] array) {
-        int start = 0;
-        int end = array.length - 1;
-
-        while (start < end) {
-            // Swap elements at start and end indices
-            int temp = array[start];
-            array[start] = array[end];
-            array[end] = temp;
-
-            // Move indices towards the center
-            start++;
-            end--;
-        }
-    }
 }
