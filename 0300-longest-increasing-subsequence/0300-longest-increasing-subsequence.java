@@ -6,7 +6,7 @@ class Solution {
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
         memo = new int[n];
-        Arrays.fill(memo, -1); // Initialize memoization array with -1 (indicating not computed)
+        Arrays.fill(memo, -1);
 
         int maxLength = 0;
         for (int i = 0; i < n; i++) {
@@ -17,21 +17,21 @@ class Solution {
 
     private int findLIS(int[] nums, int currentIndex) {
         if (currentIndex == nums.length) {
-            return 0; // Base case: reached end of the array
+            return 0; 
         }
 
         if (memo[currentIndex] != -1) {
-            return memo[currentIndex]; // Return memoized result if available
+            return memo[currentIndex]; 
         }
 
-        int maxLength = 1; // Minimum length of LIS is 1 (current element itself)
+        int maxLength = 1; 
         for (int i = currentIndex + 1; i < nums.length; i++) {
             if (nums[i] > nums[currentIndex]) {
                 maxLength = Math.max(maxLength, 1 + findLIS(nums, i));
             }
         }
 
-        memo[currentIndex] = maxLength; // Memoize the result
+        memo[currentIndex] = maxLength; 
         return maxLength;
     }
 }
